@@ -24,3 +24,26 @@ app.factory("SimpleService", ["$http", "$q", function ($http, $q) {
 
     return service;
 }]);
+
+app.factory("ComplexService", ["SimpleService", function (SimpleService) {
+
+    var complexService = {
+        handleData: function () {
+            var promise = SimpleService.getData();
+            promise.then(function (fruits) {
+                //some sort of data processing
+                angular.forEach(fruits, function (fruit) {
+                    if (fruit.name === "banana") {
+                        fruit.hasMoney = true;
+                    }
+                });
+            }, function (reason) {
+                //do something with the reason.
+            });
+
+            return promise;
+        }
+    };
+
+    return complexService;
+}]);
